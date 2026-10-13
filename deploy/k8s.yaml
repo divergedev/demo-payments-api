@@ -5,6 +5,8 @@ metadata:
   namespace: demo-bank
   labels:
     app: payments-api
+    divergedev.com/service: payments-api
+    divergedev.com/role: baseline
 spec:
   replicas: 1
   selector:
@@ -14,6 +16,8 @@ spec:
     metadata:
       labels:
         app: payments-api
+        divergedev.com/service: payments-api
+        divergedev.com/role: baseline
     spec:
       containers:
         - name: payments-api
@@ -39,6 +43,10 @@ kind: Service
 metadata:
   name: payments-api
   namespace: demo-bank
+  labels:
+    app: payments-api
+    divergedev.com/service: payments-api
+    divergedev.com/role: baseline
 spec:
   selector:
     app: payments-api

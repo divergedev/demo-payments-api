@@ -1,14 +1,26 @@
-apiVersion: diverge.io/v1alpha1
-kind: ServicePreview
-metadata:
-  name: payments-api
-spec:
-  namespace: demo-bank
-  serviceName: payments-api
-  port: 8080
+# yaml-language-server: $schema=https://divergedev.com/schemas/diverge.schema.json
+version: "1"
+
+services:
+  payments-api:
+    paths:
+      - "**/*.go"
+      - "Dockerfile"
+      - "deploy/**"
+    image:
+      repository: ghcr.io/divergedev/demo-payments-api
+      tag_template: "pr-{{.PR}}"
+
+defaults:
+  deploy:
+    mode: delta
+    namespace: same
   routing:
-    headerKey: x-preview-id
-  container:
-    env:
-      - name: ACCOUNTS_API_URL
-        value: http://accounts-api:8080
+    mode: header
+    baseline_namespace: demo-bank
+    header_key: x-preview-id
+  database:
+    mode: schema
+  lifecycle:
+    ttl: 24h
+    cleanup_on_merge: true
